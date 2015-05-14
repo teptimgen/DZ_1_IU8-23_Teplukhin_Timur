@@ -1,49 +1,93 @@
-#include "Headers.h"
-#include "ClassBook.h"
-#include "ClassBookList.h"
+// Copyright 2015 <Timur Teplukhin>
+#include "Library.h"
 
-int main()
-{
-	setlocale(LC_ALL,"Rus"); // Настройка вывода кириллицы
-	
-	cl_BookList lib("Библиотека №1", "Учебники для первого курса втузов"); // Создание библиотеки
+int main() {
+    Book temp;
+    Library lib("Library #1", "Student books");
 
-	cout << endl << "СОЗДАНИЕ 3-Х КНИГ" << endl;
+    cout << endl << "*** CREATING THREE BOOKS" << endl << endl;
 
-	cl_Book book_1(9785903034895,  2010, 480, "Сборник задач по математике. Часть 1", "Б.П. Ефимов"); // Создание первой книги
-	book_1.fn_add_author("В.А. Демидович"); // Добавление нового автора к уже существующим
-	cout << book_1 << endl;
-	lib += book_1; // Добавление новой книги в библиотеку
-	
-	cl_Book *book_2 = new cl_Book(); // Создание второй книги без параметров
-	book_2->fn_set_all_params(9785798904259, 2012, 1136, "Язык программирования С++"); // Передача параметров
-	book_2->fn_add_author("Бьерн Страуструп"); // Добавление автора
-	cout << *book_2 << endl;
-	lib.fn_add_book(*book_2); // Добавление новой книги в библиотеку
-	delete book_2;
-	
-	cl_Book *book_3 = new cl_Book(5020138495,  1988, 416, "Задачи по общей физике","И.Е. Иродов"); // Создание третьей книги
-	cout << *book_3 << endl;
-	lib += *book_3; // Добавление новой книги в библиотеку
-	delete book_3;
+    Book bookOne("Book 1", "Author 1.1", 111, FALSE);
+    cout << bookOne << endl;
+    lib += bookOne;
 
-	cout << endl << "СОДЕРЖИМОЕ БИБЛИОТЕКИ" << endl << lib << endl; // Вывод всей библиотеки на экран
+    Book bookTwo;
+    bookTwo.SetTitle("Book 2");
+    bookTwo.SetAuthors("Author 2.1, Author 2.2");
+    bookTwo.SetPages(222);
+    bookTwo.SetCheckOut(FALSE);
+    cout << bookTwo << endl;
+    lib.AddBook(bookTwo);
 
-	cout << endl << "ОПЕРАЦИЯ ВЫДАЧИ КНИГИ ПОД НОМЕРОМ 1" << endl;
-	lib.fn_change_check_out(1, true); // Успешная выдача книги book_1
-	lib.fn_change_check_out(1, true); // Неудачная выдача книги book_1 ввиду ее наличия у читателя
+    Book bookThree("Book 3", "Author 3.1", 333, FALSE);
+    cout << bookThree << endl;
+    lib += bookThree;
 
-	cout << endl << "ПОИСК КНИГИ ПОД НОМЕРОМ 2" << endl;
-	cl_Book* tmp = lib.fn_find_book_with_num(2); // Метод поиска книги по уникальному номеру
-	if (tmp != NULL) cout << "Книга с номером 2: " << *tmp << endl; // Находим и выводим на экран книгу по номеру, ...
-	else cout << "Книга с таким номером не найдена " << endl; // ..., либо ошибка о невозможности найти книгу по номеру
-	
-	cout << endl << "УДАЛЕНИЕ КНИГИ ПОД НОМЕРОМ 2" << endl;
-	lib.fn_del_book(2); // Попытка удалить книгу
+    cout << endl << "*** LIBRARY #1:" << endl << lib << endl;
 
-	cout << endl << "СОДЕРЖИМОЕ БИБЛИОТЕКИ" << endl << lib << endl; // Вывод обновленной библиотеки на экран
-	   
-	system("pause"); // Команда задержки экрана
+    try {
+        cout << endl << "*** DELIVERY OF BOOK #1" << endl;
+        lib.TakeBook(1);
+        lib.TakeBook(1);
+        lib.PassBook(1);
+        lib.PassBook(1);
+        lib.TakeBook(1);
 
-	return 0;
+        cout << endl << "*** REMOVAL OF BOOK #2" << endl;
+        lib.RemoveBook(2);
+        lib.RemoveBook(2);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** SEARCH FOR THE BOOK #2" << endl;
+        temp = lib.GetBook(2);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** LIBRARY #1:" << endl << lib << endl;
+
+        cout << endl << "*** PRINT BOOK #3 FROM LIBRARY" << endl;
+        lib.PrintBook(3);
+
+        cout << endl << "*** REMOVAL OF BOOK #3" << endl;
+        lib.RemoveBook(3);
+        lib.RemoveBook(3);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** REMOVAL OF TAKEN BOOK #1" << endl;
+        lib.RemoveBook(bookOne);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    cout << "Book #1 " << ((lib.Has(bookOne)) ?
+        "exists" : "does not exist") << " in the library" << endl;
+    lib.PassBook(1);
+    lib.RemoveBook(1);
+    cout << endl << "*** LIBRARY #1:" << endl;
+    lib.PrintLibrary();
+    cout << "Book #1 " << ((lib.Has(bookOne)) ?
+        "exists" : "does not exist") << " in the library" << endl;
+
+    try {
+        cout << endl << "*** REMOVAL OF TAKEN BOOK #1" << endl;
+        lib.RemoveBook(bookOne);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    system("pause > null");
+    return 0;
 }
