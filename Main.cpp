@@ -71,17 +71,19 @@ int main() {
         cout << exc.what() << endl;
     }
 
-    cout << "Book #1 " << ((lib.Has(bookOne)) ?
-        "exists" : "does not exist") << " in the library" << endl;
+     cout << "Book #1 " << ((lib.Has(bookOne)) ?
+        "is" : "is not") << " in the library" << endl;
     lib.PassBook(1);
-    lib.RemoveBook(1);
+    cout << "Book #1 " << ((lib.Has(bookOne)) ?
+        "is" : "is not") << " in the library" << endl;
+    lib.RemoveBook(bookOne);
     cout << endl << "*** LIBRARY #1:" << endl;
     lib.PrintLibrary();
     cout << "Book #1 " << ((lib.Has(bookOne)) ?
-        "exists" : "does not exist") << " in the library" << endl;
+        "is" : "is not") << " in the library" << endl;
 
     try {
-        cout << endl << "*** REMOVAL OF TAKEN BOOK #1" << endl;
+        cout << endl << "*** REMOVAL OF NONEXISTENT BOOK #1" << endl;
         lib.RemoveBook(bookOne);
     }
     catch (exception& exc) {
