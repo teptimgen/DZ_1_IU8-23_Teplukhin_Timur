@@ -42,3 +42,4 @@ class Library : private std::list <Book> {
     friend ostream& operator<<(ostream&, const Library&);
     Library& operator+=(const Book&);
 };
+
