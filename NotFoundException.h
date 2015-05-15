@@ -11,3 +11,4 @@ class NotFoundException : public exception {
     explicit NotFoundException(int id);
     const char* what() const throw();
 };
+
