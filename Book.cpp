@@ -98,5 +98,8 @@ const Book& Book::operator=(const Book& book) {
 }
 
 bool operator==(const Book& bookOne, const Book& bookTwo) {
-    return bookOne.id == bookTwo.id;
+    return ((bookOne.title == bookTwo.title) &&
+        (bookOne.authors == bookTwo.authors) &&
+        (bookOne.pages == bookTwo.pages) &&
+        (bookOne.checkOut == bookTwo.checkOut));
 }
