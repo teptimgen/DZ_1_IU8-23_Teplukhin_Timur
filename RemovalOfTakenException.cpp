@@ -17,3 +17,4 @@ RemovalOfTakenException::RemovalOfTakenException(int id) : exception() {
 const char* RemovalOfTakenException::what() const {
     return errMsg.c_str();
 }
+
