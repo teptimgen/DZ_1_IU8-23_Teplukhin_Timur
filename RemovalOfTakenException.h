@@ -11,3 +11,4 @@ class RemovalOfTakenException : public exception {
     explicit RemovalOfTakenException(int id);
     const char* what() const throw();
 };
+
