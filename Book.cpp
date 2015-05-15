@@ -103,3 +103,4 @@ bool operator==(const Book& bookOne, const Book& bookTwo) {
         (bookOne.pages == bookTwo.pages) &&
         (bookOne.checkOut == bookTwo.checkOut));
 }
+
