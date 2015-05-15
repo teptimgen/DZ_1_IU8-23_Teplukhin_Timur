@@ -181,3 +181,4 @@ Library& Library::operator+=(const Book& book) {
     AddBook(book);
     return *this;
 }
+
