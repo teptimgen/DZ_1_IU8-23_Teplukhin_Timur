@@ -38,3 +38,4 @@ class Book {
     const Book& operator=(const Book&);
     friend bool operator==(const Book&, const Book&);
 };
+
