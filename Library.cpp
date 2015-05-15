@@ -68,7 +68,7 @@ void Library::AddBook(Book book) {
 void Library::RemoveBook(int id) {
     Book temp = GetBook(id);
     if (&temp != NULL) {
-        list<Book>::iterator iter = this->begin();
+        list<Book>::const_iterator iter = this->begin();
         for (; iter != this->end(); ++iter)
             if (iter._Ptr->_Myval.GetId() == id) {
                 if (iter._Ptr->_Myval.GetCheckOut() == FALSE) {
@@ -86,7 +86,7 @@ void Library::RemoveBook(int id) {
 
 void Library::RemoveBook(const Book& book) {
     Book temp = book;
-    list<Book>::iterator iter = this->begin();
+    list<Book>::const_iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
         if (iter._Ptr->_Myval == temp) {
             if (iter._Ptr->_Myval.GetCheckOut() == FALSE) {
@@ -109,7 +109,7 @@ const Book& Library::GetBook(int id) const {
 }
 
 void Library::TakeBook(int id) {
-    list<Book>::iterator iter = this->begin();
+    list<Book>::const_iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
         if (iter._Ptr->_Myval.GetId() == id) {
             if (iter._Ptr->_Myval.GetCheckOut() == FALSE) {
@@ -126,7 +126,7 @@ void Library::TakeBook(int id) {
 }
 
 void Library::PassBook(int id) {
-    list<Book>::iterator iter = this->begin();
+    list<Book>::const_iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
         if (iter._Ptr->_Myval.GetId() == id) {
             if (iter._Ptr->_Myval.GetCheckOut() == TRUE) {
