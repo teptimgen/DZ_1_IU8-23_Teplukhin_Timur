@@ -71,7 +71,7 @@ int main() {
         cout << exc.what() << endl;
     }
 
-     cout << "Book #1 " << ((lib.Has(bookOne)) ?
+    cout << "Book #1 " << ((lib.Has(bookOne)) ?
         "is" : "is not") << " in the library" << endl;
     lib.PassBook(1);
     cout << "Book #1 " << ((lib.Has(bookOne)) ?
