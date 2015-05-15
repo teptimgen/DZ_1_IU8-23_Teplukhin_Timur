@@ -16,3 +16,4 @@ NotFoundException::NotFoundException(int id) : exception() {
 const char* NotFoundException::what() const {
     return errMsg.c_str();
 }
+
