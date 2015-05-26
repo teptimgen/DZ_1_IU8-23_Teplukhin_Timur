@@ -7,7 +7,7 @@ int main() {
 
     cout << endl << "*** CREATING THREE BOOKS" << endl << endl;
 
-    Book bookOne("Book 1", "Author 1.1", 111, FALSE);
+    Book bookOne("Book 1", "Author 1.1", 111, false);
     cout << bookOne << endl;
     lib += bookOne;
 
@@ -15,26 +15,69 @@ int main() {
     bookTwo.SetTitle("Book 2");
     bookTwo.SetAuthors("Author 2.1, Author 2.2");
     bookTwo.SetPages(222);
-    bookTwo.SetCheckOut(FALSE);
+    bookTwo.SetCheckOut(false);
     cout << bookTwo << endl;
     lib.AddBook(bookTwo);
 
-    Book bookThree("Book 3", "Author 3.1", 333, FALSE);
+    Book bookThree("Book 3", "Author 3.1", 333, false);
     cout << bookThree << endl;
     lib += bookThree;
 
     cout << endl << "*** LIBRARY #1:" << endl << lib << endl;
 
-    try {
-        cout << endl << "*** DELIVERY OF BOOK #1" << endl;
-        lib.TakeBook(1);
-        lib.TakeBook(1);
-        lib.PassBook(1);
-        lib.PassBook(1);
-        lib.TakeBook(1);
+    cout << endl << "*** EDITING THE AUTHORS OF BOOK #2" << endl;
+    lib.EditBook(2).SetAuthors("Edited: Author 2.1");
+    cout << endl << "*** LIBRARY #1:" << endl << lib << endl;
 
-        cout << endl << "*** REMOVAL OF BOOK #2" << endl;
+    try {
+        cout << endl << "*** SUCCESSFUL TRYING TO TAKE BOOK #1" << endl;
+        lib.TakeBook(1);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** FAILED TRYING TO TAKE BOOK #1" << endl;
+        lib.TakeBook(1);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** SUCCESSFUL TRYING TO PASS BOOK #1" << endl;
+        lib.PassBook(1);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** FAILED TRYING TO PASS BOOK #1" << endl;
+        lib.PassBook(1);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        lib.TakeBook(1);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** SUCCESSFUL REMOVAL OF BOOK #2" << endl;
         lib.RemoveBook(2);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << endl << "*** FAILED REMOVAL OF BOOK #2" << endl;
         lib.RemoveBook(2);
     }
     catch (exception& exc) {
@@ -57,7 +100,6 @@ int main() {
 
         cout << endl << "*** REMOVAL OF BOOK #3" << endl;
         lib.RemoveBook(3);
-        lib.RemoveBook(3);
     }
     catch (exception& exc) {
         cout << exc.what() << endl;
@@ -71,12 +113,24 @@ int main() {
         cout << exc.what() << endl;
     }
 
+    try {
     cout << "Book #1 " << ((lib.Has(bookOne)) ?
         "is" : "is not") << " in the library" << endl;
     lib.PassBook(1);
-    cout << "Book #1 " << ((lib.Has(bookOne)) ?
-        "is" : "is not") << " in the library" << endl;
-    lib.RemoveBook(bookOne);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
+    try {
+        cout << "Book #1 " << ((lib.Has(bookOne)) ?
+            "is" : "is not") << " in the library" << endl;
+        lib.RemoveBook(bookOne);
+    }
+    catch (exception& exc) {
+        cout << exc.what() << endl;
+    }
+
     cout << endl << "*** LIBRARY #1:" << endl;
     lib.PrintLibrary();
     cout << "Book #1 " << ((lib.Has(bookOne)) ?
@@ -90,7 +144,7 @@ int main() {
         cout << exc.what() << endl;
     }
 
-    system("pause > null");
+    system("pause");
     return 0;
 }
 
