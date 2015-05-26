@@ -1,8 +1,7 @@
 // Copyright 2015 <Timur Teplukhin>
 #pragma once
 
-#include "NotFoundException.h"
-#include "RemovalOfTakenException.h"
+#include "Exceptions.h"
 #include <string>
 #include <list>
 
@@ -11,12 +10,12 @@ class Book {
     string title;
     string authors;
     int pages;
-    byte checkOut;
+    bool checkOut;
 
  public:
     Book();
     Book(const Book&);
-    Book(const string&, const string&, int, byte);
+    Book(const string&, const string&, int, bool);
     ~Book();
 
     void SetId(int id);
@@ -31,8 +30,8 @@ class Book {
     void SetPages(int pages);
     int GetPages() const;
 
-    void SetCheckOut(byte checkOut);
-    byte GetCheckOut() const;
+    void SetCheckOut(bool checkOut);
+    bool GetCheckOut() const;
 
     friend ostream& operator<<(ostream&, const Book&);
     const Book& operator=(const Book&);
