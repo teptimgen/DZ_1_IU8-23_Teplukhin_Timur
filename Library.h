@@ -25,14 +25,15 @@ class Library : private std::list <Book> {
     void SetCountCheckedOut(int countCheckedOut);
     int GetCountCheckedOut() const;
 
-    int Has(const Book&) const;
+    bool Has(const Book&) const;
 
     int Library::GetSize() const;
 
-    void AddBook(Book);
+    void AddBook(const Book&);
     void RemoveBook(int id);
     void RemoveBook(const Book&);
     const Book& GetBook(int id) const;
+    Book& EditBook(int id);
     void TakeBook(int id);
     void PassBook(int id);
     void PrintBook(int id);
