@@ -5,10 +5,10 @@
 
 Book::Book() {
     id = 0;
-    title = "\0";
-    authors = "\0";
+    title = string();
+    authors = string();
     pages = 0;
-    checkOut = FALSE;
+    checkOut = false;
 }
 
 Book::Book(const Book& book) {
@@ -20,7 +20,7 @@ Book::Book(const Book& book) {
 }
 
 Book::Book(const string& title, const string& authors,
-        int pages, byte checkOut) {
+        int pages, bool checkOut) {
     id = 0;
     this->title = title;
     this->authors = authors;
@@ -29,11 +29,6 @@ Book::Book(const string& title, const string& authors,
 }
 
 Book::~Book() {
-    id = 0;
-    title = "\0";
-    authors = "\0";
-    pages = 0;
-    checkOut = FALSE;
 }
 
 void Book::SetId(int id) {
@@ -68,11 +63,11 @@ int Book::GetPages() const {
     return pages;
 }
 
-void Book::SetCheckOut(byte checkOut) {
+void Book::SetCheckOut(bool checkOut) {
     this->checkOut = checkOut;
 }
 
-byte Book::GetCheckOut() const {
+bool Book::GetCheckOut() const {
     return checkOut;
 }
 
