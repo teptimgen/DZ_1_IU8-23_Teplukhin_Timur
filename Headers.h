@@ -2,9 +2,6 @@
 #pragma once
 
 #define _CRT_SECURE_NO_WARNINGS
-#define FALSE 0
-#define TRUE 1
-typedef unsigned __int8 byte;
 
 #include <iostream>
 #include <cstdio>
