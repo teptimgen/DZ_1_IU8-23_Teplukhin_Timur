@@ -4,8 +4,8 @@
 #include <list>
 
 Library::Library() {
-    name = "\0";
-    type = "\0";
+    name = string();
+    type = string();
     countCheckedOut = 0;
     maxId = 0;
 }
@@ -18,10 +18,6 @@ Library::Library(const string& name, const string& type) {
 }
 
 Library::~Library() {
-    name = "\0";
-    type = "\0";
-    countCheckedOut = 0;
-    maxId = 0;
 }
 
 void Library::SetName(const string& name) {
@@ -48,50 +44,36 @@ int Library::GetCountCheckedOut() const {
     return countCheckedOut;
 }
 
-int Library::Has(const Book& book) const {
+bool Library::Has(const Book& book) const {
     list<Book>::const_iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
-        if (iter._Ptr->_Myval == book)
-            return TRUE;
-    return FALSE;
+        if (*iter == book)
+            return true;
+    return false;
 }
 
 int Library::GetSize() const {
     return this->size();
 }
 
-void Library::AddBook(Book book) {
-    book.SetId(++maxId);
+void Library::AddBook(const Book& book) {
     this->emplace_back(book);
+    EditBook(0).SetId(++maxId);
 }
 
 void Library::RemoveBook(int id) {
     Book temp = GetBook(id);
-    if (&temp != NULL) {
-        list<Book>::const_iterator iter = this->begin();
-        for (; iter != this->end(); ++iter)
-            if (iter._Ptr->_Myval.GetId() == id) {
-                if (iter._Ptr->_Myval.GetCheckOut() == FALSE) {
-                    this->erase(iter);
-                    cout << "The book has been removed" << endl;
-                    return;
-                } else {
-                    throw RemovalOfTakenException(id);
-                }
-            }
-    } else {
-        throw NotFoundException(id);
-    }
+    RemoveBook(temp);
 }
 
 void Library::RemoveBook(const Book& book) {
     Book temp = book;
     list<Book>::const_iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
-        if (iter._Ptr->_Myval == temp) {
-            if (iter._Ptr->_Myval.GetCheckOut() == FALSE) {
+        if (*iter == temp) {
+            if ((*iter).GetCheckOut() == false) {
                 this->erase(iter);
-                cout << "The book has been removed" << endl;
+                throw SuccessfulRemovalMessage(temp.GetTitle());
                 return;
             } else {
                 throw RemovalOfTakenException(temp.GetTitle());
@@ -103,22 +85,30 @@ void Library::RemoveBook(const Book& book) {
 const Book& Library::GetBook(int id) const {
     list<Book>::const_iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
-        if (iter._Ptr->_Myval.GetId() == id)
-            return iter._Ptr->_Myval;
+        if ((*iter).GetId() == id)
+            return *iter;
+    throw NotFoundException(id);
+}
+
+Book& Library::EditBook(int id) {
+    list<Book>::iterator iter = this->begin();
+    for (; iter != this->end(); ++iter)
+        if ((*iter).GetId() == id)
+            return *iter;
     throw NotFoundException(id);
 }
 
 void Library::TakeBook(int id) {
-    list<Book>::const_iterator iter = this->begin();
+    list<Book>::iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
-        if (iter._Ptr->_Myval.GetId() == id) {
-            if (iter._Ptr->_Myval.GetCheckOut() == FALSE) {
+        if ((*iter).GetId() == id) {
+            if ((*iter).GetCheckOut() == false) {
                 ++countCheckedOut;
-                iter._Ptr->_Myval.SetCheckOut(TRUE);
-                cout << "The book has been taken" << endl;
+                (*iter).SetCheckOut(true);
+                throw SuccessfulTakingMessage(id);
                 return;
             } else {
-                cout << "Cannot take the book" << endl;
+                throw FailedTakingException(id);
                 return;
             }
         }
@@ -126,16 +116,16 @@ void Library::TakeBook(int id) {
 }
 
 void Library::PassBook(int id) {
-    list<Book>::const_iterator iter = this->begin();
+    list<Book>::iterator iter = this->begin();
     for (; iter != this->end(); ++iter)
-        if (iter._Ptr->_Myval.GetId() == id) {
-            if (iter._Ptr->_Myval.GetCheckOut() == TRUE) {
+        if ((*iter).GetId() == id) {
+            if ((*iter).GetCheckOut() == true) {
                 --countCheckedOut;
-                iter._Ptr->_Myval.SetCheckOut(FALSE);
-                cout << "The book has been passed" << endl;
+                (*iter).SetCheckOut(false);
+                throw SuccessfulPassingMessage(id);
                 return;
             } else {
-                cout << "Cannot pass the book" << endl;
+                throw FailedPassingException(id);
                 return;
             }
         }
@@ -144,16 +134,12 @@ void Library::PassBook(int id) {
 
 void Library::PrintBook(int id) {
     Book temp = GetBook(id);
-    if (&temp != NULL) {
-        cout << "id:............." << temp.GetId() << endl;
-        cout << "Title:.........." << temp.GetTitle().c_str() << endl;
-        cout << "Authors:........" << temp.GetAuthors().c_str() << endl;
-        cout << "Pages:.........." << temp.GetPages() << endl;
-        cout << "Status:........." << ((temp.GetCheckOut()) ?
-            "Taken" : "Available") << endl;
-    } else {
-        throw NotFoundException(id);
-    }
+    cout << "id:............." << temp.GetId() << endl;
+    cout << "Title:.........." << temp.GetTitle().c_str() << endl;
+    cout << "Authors:........" << temp.GetAuthors().c_str() << endl;
+    cout << "Pages:.........." << temp.GetPages() << endl;
+    cout << "Status:........." << ((temp.GetCheckOut()) ?
+        "Taken" : "Available") << endl;
 }
 
 void Library::PrintLibrary() {
@@ -163,7 +149,7 @@ void Library::PrintLibrary() {
     cout << "Taken books:...." << GetCountCheckedOut() << endl;
     std::list<Book>::const_iterator iter = begin();
     for (; iter != end(); ++iter)
-        cout << endl << iter._Ptr->_Myval;
+        cout << endl << *iter;
 }
 
 ostream& operator<<(ostream& os, const Library& lib) {
@@ -173,7 +159,7 @@ ostream& operator<<(ostream& os, const Library& lib) {
     os << "Taken books:...." << lib.countCheckedOut << endl;
     std::list<Book>::const_iterator iter = lib.begin();
     for (; iter != lib.end(); ++iter)
-        os << endl << iter._Ptr->_Myval;
+        os << endl << *iter;
     return os;
 }
 
